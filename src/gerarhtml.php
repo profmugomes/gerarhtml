@@ -18,7 +18,7 @@ namespace GerarHTML;
 class gerarhtml
 {
     /* Tags que não fecham */
-    private $naofecha = ['input', 'br'];
+    private $naofecha = ['meta', 'input', 'br'];
     private $atributosemvalor = ['required'];
 
     public function __call($elemento, $argumentos)
