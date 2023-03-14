@@ -12,8 +12,7 @@ echo $tpl->html(
         $tpl->title('Exemplo')
     ),
     $tpl->body(
-        $tpl->div(['style' => 'font-size:12px;',
-                   'style' => 'font-weight:bold;'],
+        $tpl->div(['style' => 'font-size:12px;font-weight:bold;'],
                    'Este é um exemplo de como usar a classe GerarHTML!')
     )
 );
