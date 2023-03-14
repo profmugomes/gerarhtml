@@ -18,69 +18,26 @@ namespace GerarHTML;
 class gerarhtml
 {
     /* Tags que não fecham */
-    private $naofecha = ['input'];
+    private $naofecha = ['input', 'br'];
+    private $atributosemvalor = ['required'];
 
     public function __call($elemento, $argumentos)
     {
-        /* Idioma */
-        $sLang = '';
-
         /* Armazena o Conteudo */
         $sArgumento = '';
-
-        /* Atributos */
-        $sName = '';
-        $sMethod = '';
-        $sType = '';
-        $sClass = '';
-        $sStyle = '';
-
+        $sAtributos = '';
         foreach ($argumentos as $conteudo) {
             if (is_array($conteudo)) {
                 foreach ($conteudo as $atributo => $valor) {
-                    if ($atributo === 'class') { // Atributo class
-                        $sClass .= $valor . ' ';
-                    } elseif ($atributo === 'style') { // Atributo style
-                        $sStyle .= $valor . ' ';
-                    } elseif ($atributo === 'method') { // Atributo method
-                        $sMethod = $valor;
-                    } elseif ($atributo === 'name') { // Atributo name
-                        $sName = $valor;
-                    } elseif ($atributo === 'type') { // Atributo type
-                        $sType = $valor;
-                    } elseif ($atributo === 'lang') { // Atributo lang
-                        $sLang = $valor;
+                    if ($this->procurarValores($atributo, $this->atributosemvalor)) {
+                        $sAtributos .= ' ' . $atributo;
+                    } else {
+                        $sAtributos .= ' ' . $atributo . '="' . $valor . '"';
                     }
                 }
             } else {
                 $sArgumento .= $conteudo . "\n";
             }
-        }
-
-        $sAtributos = '';
-
-        if (!empty($sLang)) {
-            $sAtributos = ' lang="' . $sLang . '"'; // Atributo lang
-        }
-
-        if (!empty($sName)) {
-            $sAtributos .= ' name="' . $sName . '"'; // Atributo name
-        }
-
-        if (!empty($sMethod)) {
-            $sAtributos .= ' method="' . $sMethod . '"'; // Atributo method
-        }
-
-        if (!empty($sType)) {
-            $sAtributos .= ' type="' . $sType . '"'; // Atributo type
-        }
-
-        if (!empty($sClass)) {
-            $sAtributos .= ' class="' . rtrim($sClass, ' ') . '"'; // Atributo class
-        }
-
-        if (!empty($sStyle)) {
-            $sAtributos .= ' style="' . rtrim($sStyle, ' ') . '"'; // Atributo style
         }
 
         /* Procura se o elemento não fecha */
@@ -103,6 +60,8 @@ class gerarhtml
     {
         if (!is_array($itens)) {
             $aItens = array($itens);
+        } else {
+            $aItens = $itens;
         }
 
         foreach ($aItens as $valor) {
